@@ -1,57 +1,19 @@
-import './style.css'
-import * as Sqrl from 'squirrelly'
+import * as Sqrl from 'squirrelly';
 
-var myTemplate = `
-<h2>Comments</h2>
-{{commentHelper(options)/}}
-`
+Sqrl.filters.define('default', (str, defaultStr) => {
+  if (str) {
+    return str;
+  }
+  return defaultStr;
+});
 
-var even = true
+const template = `{{ context.username | default("고객") }}님 안녕하세요?`;
 
-// Sqrl.defineHelper("commentHelper", function (args) {
-//   even = !even // if false, set to true. If it's true, set to false
+const data = {
+  context: {
+    username: '김태훈',
+  },
+};
 
-//   // console.log(JSON.stringify(args))
-//   var returnVal = `<div class="comment comment${even ? "-even" : "-odd"}">
-//         <div class="comment-header">
-//             <div class="comment-username">{{username}}</div>
-//             <div class="comment-timestamp">posted {{timestamp}}</div>
-//         </div>
-//         <div class="comment-content">
-//             <p>{{content}}</p>
-//         </div>
-//         <div class="comment-children">
-//             <!-- This IF statement was put here in an attempt to fix the out-of-memory crash, but it still happens regardless of the amount of children -->
-//             {{if(options.children.length > 0)}}
-//             {{each(options.children)}}
-//             {{commentHelper(@this)/}}
-//             {{/each}}
-//             {{/if}}
-//         </div>
-//     </div>`
-
-//   return Sqrl.Render(returnVal, args)
-// })
-
-console.log(Object.keys(Sqrl))
-console.log()
-
-
-
-// document.getElementById('root').innerHTML = Sqrl.Render(myTemplate, {
-//   "_id": {
-//     "$oid": "user_id"
-//   },
-//   "username": "Ada Lovelace",
-//   "timestamp": "5-9-2019 at 11:04 PM",
-//   "content": "Test comment",
-//   "children": [
-//     {
-//       "username": "Johnny Appleseed",
-//       "timestamp": "5-9-2019 at 11:06 PM",
-//       "content": "This is a reply",
-//       "children": []
-//     }
-//   ],
-//   "__v": 0
-// })
+console.log('1', Sqrl.render(template, data, { useWith: true }));
+console.log('2', Sqrl.render(template, { context: {} }, { useWith: true }));
