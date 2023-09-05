@@ -1,5 +1,8 @@
 import * as Sqrl from 'squirrelly';
+import React, { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
+// 필터 설정
 Sqrl.filters.define('default', (str, defaultStr) => {
   if (str) {
     return str;
@@ -15,5 +18,30 @@ const data = {
   },
 };
 
-console.log('1', Sqrl.render(template, data, { useWith: true }));
-console.log('2', Sqrl.render(template, { context: {} }, { useWith: true }));
+export default function App() {
+  return (
+    <div>
+      <p>
+        context 있음:{' '}
+        {Sqrl.render(
+          template,
+          { context: { username: '김태훈' } },
+          { useWith: true }
+        )}
+      </p>
+      <p>
+        context 없음:{' '}
+        {Sqrl.render(template, { context: {} }, { useWith: true })}
+      </p>
+    </div>
+  );
+}
+
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
